@@ -1,4 +1,3 @@
-let gameBoard = document.getElementById("board");
 let boxes = document.getElementsByClassName("box");
 let announcer = document.getElementById("announcer");
 let submit = document.getElementById("submit");
