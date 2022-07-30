@@ -2,9 +2,11 @@ let gameBoard = document.getElementById("board");
 let boxes = document.getElementsByClassName("box");
 let announcer = document.getElementById("announcer");
 let submit = document.getElementById("submit");
+let playerInput = document.getElementById("playerInput");
 let reset = document.getElementById("reset");
 let p1 = document.getElementById("p1input");
 let p2 = document.getElementById("p2input");
+let playerSelect = document.getElementById("select");
 let draw = 0;
 let gameOver = false;
 
@@ -24,7 +26,6 @@ let winningCombonations = [
   ["2", "4", "6"],
 ];
 
-
 let currentPlayer = gameState.players[0];
 
 function displayNames() {
@@ -37,17 +38,24 @@ function userInput() {
   for (let i = 0; i < boxes.length; i++) {
     boxes[i].addEventListener("click", function () {
       if (boxes[i].textContent === "" && !gameOver) {
-        if (currentPlayer === "X") {
-          boxes[i].classList.add("X");
-        } else {
-          boxes[i].classList.add("O");
-        }
         boxes[i].textContent = currentPlayer;
         gameState.board[i] = boxes[i].textContent;
         checkWin();
-        nextPlayer();
         draw++;
         checkDraw();
+        nextPlayer();
+        if (p2.value === "" || (p1.value === "" && !gameOver)) {
+          let computerPlay = Math.floor(Math.random() * boxes.length);
+          while (boxes[computerPlay].textContent !== "" && !gameOver) {
+            computerPlay = Math.floor(Math.random() * boxes.length);
+          }
+          boxes[computerPlay].textContent = currentPlayer;
+          gameState.board[computerPlay] = boxes[computerPlay].textContent;
+          checkWin();
+          draw++;
+          checkDraw();
+          nextPlayer();
+        }
       }
     });
   }
@@ -55,6 +63,7 @@ function userInput() {
 
 function checkDraw() {
   if (draw === 9 && !gameOver) {
+    gameOver = true;
     announcer.textContent = "It's a draw! Reset to play again.";
   }
 }
@@ -115,4 +124,8 @@ reset.addEventListener("click", resetGame);
 
 submit.addEventListener("click", displayNames);
 
-userInput();
+function initializeGame() {
+  userInput();
+}
+
+initializeGame();
