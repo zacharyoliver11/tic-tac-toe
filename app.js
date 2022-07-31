@@ -43,20 +43,26 @@ function userInput() {
         draw++;
         checkDraw();
         nextPlayer();
-        if (p2.value === "" || (p1.value === "" && !gameOver)) {
-          let computerPlay = Math.floor(Math.random() * boxes.length);
-          while (boxes[computerPlay].textContent !== "" && !gameOver) {
-            computerPlay = Math.floor(Math.random() * boxes.length);
-          }
-          boxes[computerPlay].textContent = currentPlayer;
-          gameState.board[computerPlay] = boxes[computerPlay].textContent;
-          checkWin();
-          draw++;
-          checkDraw();
-          nextPlayer();
-        }
+        computerPlayer();
       }
     });
+  }
+}
+
+function computerPlayer() {
+  if (p2.value === "" || (p1.value === "" && !gameOver)) {
+    let computerTurn = Math.floor(Math.random() * boxes.length);
+    while (boxes[computerTurn].textContent !== "" && !gameOver) {
+      computerTurn = Math.floor(Math.random() * boxes.length);
+    }
+    if (!gameOver) {
+      boxes[computerTurn].textContent = currentPlayer;
+      gameState.board[computerTurn] = boxes[computerTurn].textContent;
+      checkWin();
+      draw++;
+      checkDraw();
+      nextPlayer();
+    }
   }
 }
 
